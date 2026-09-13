@@ -9,6 +9,15 @@ class TestShoppingCart:
     def cart(self) -> ShoppingCart:
         return ShoppingCart()
 
+    @pytest.fixture
+    def default_item(self) -> dict:
+        return {'name': 'apple', 'price': 10, 'quantity': 2}
+
+    @pytest.fixture
+    def cart_with_default_item(self, cart: ShoppingCart, default_item: dict) -> ShoppingCart:
+        cart.add_item(default_item['name'], default_item['price'], default_item['quantity'])
+        return cart
+
     def test_init_creates_empty_items_list(self, cart: ShoppingCart):
         assert cart.items == []
 
@@ -68,3 +77,28 @@ class TestShoppingCart:
         cart.remove_item('banana')
 
         assert cart.get_total() == 60
+
+    def test_cart_with_default_item_contains_it(
+            self, cart_with_default_item: ShoppingCart, default_item: dict):
+        assert cart_with_default_item.items == [default_item]
+
+    def test_add_second_item_to_cart_with_default_item(
+            self, cart_with_default_item: ShoppingCart, default_item: dict):
+        cart_with_default_item.add_item('banana', 5, 3)
+
+        assert cart_with_default_item.items == [
+            default_item,
+            {'name': 'banana', 'price': 5, 'quantity': 3},
+        ]
+
+    def test_remove_default_item_from_cart_with_default_item(
+            self, cart_with_default_item: ShoppingCart, default_item: dict):
+        cart_with_default_item.remove_item(default_item['name'])
+
+        assert cart_with_default_item.items == []
+
+    def test_get_total_for_cart_with_default_item(
+            self, cart_with_default_item: ShoppingCart, default_item: dict):
+        expected_total = default_item['price'] * default_item['quantity']
+
+        assert cart_with_default_item.get_total() == expected_total
