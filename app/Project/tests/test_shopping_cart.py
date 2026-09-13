@@ -1,6 +1,6 @@
 import pytest
 
-from shop_cart import ShoppingCart
+from shopping_cart import ShoppingCart
 
 
 class TestShoppingCart:
