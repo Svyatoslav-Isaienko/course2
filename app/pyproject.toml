@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "bcrypt==4.0.1",
+    "boto3>=1.43.106",
     "passlib[bcrypt]==1.7.4",
     "pyjwt>=2.14.0",
     "pyotp>=2.10.0",
